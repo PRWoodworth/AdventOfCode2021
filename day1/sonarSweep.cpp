@@ -8,43 +8,58 @@
 
 using namespace std;
 
-void part1(vector<int>);
-void part2(vector<int>);
+int part1(vector<int>);
+int part2(vector<int>);
 
 int main(int argc, char const *argv[]){
    
     vector<int> depthVector;
-    int holder = 0;
+    string temp;
 
     ifstream inputFile;
-    inputFile.open("inputFile1.txt");
+    inputFile.open("inputFile.txt");
 
-    while(!inputFile.eof()){
-        inputFile >> holder;
-        depthVector.push_back(holder);
+    while(getline(inputFile, temp)){
+        depthVector.push_back(stoi(temp));
     }
 
-    part1(depthVector);
-    part2(depthVector);
+    cout << "Total that are larger than previous: " << part1(depthVector) << endl;
+    cout << "Total sliding windows that are larger than previous: " << part2(depthVector) << endl;
 
     return 0;
 }
 
-void part1(vector<int> depthVector) {
+//Checks how many increases there are in the entire vector
+int part1(vector<int> depthVector) {
     int counter = 0;
     for (int i = 1; i < depthVector.size(); i++) {
         if(depthVector[i-1] < depthVector[i]){
             counter++;
-            cout << depthVector[i] << " (Increased) " << endl;
-        } else if (depthVector[i-1] > depthVector[i]){
-            cout << depthVector[i] << " (Decreased) " << endl;
-        } else if (depthVector[i-1] == depthVector[i]){
-            cout << depthVector[i] << " (Unchanged) " << endl;
-        }
+        } 
     }
-    cout << "Total that are larger than previous: " << counter << endl;
+    return counter;
 }
 
-void part2(vector<int> depthVector){
+/*
+    Checks to see if the sum of a sliding window increases 
+    Every 3 are part of a sliding window, overlapping
+    If not enough for a full sliding window of 3, stop
+*/
+int part2(vector<int> depthVector){
+    int counter = 0;
+    int setOne = 0;
+    int setTwo = 0;
+    //Loop starts at start of second sliding window
+    for (int i = 0; i < depthVector.size() - 2; i++){
+        setOne = depthVector[i] + depthVector[i + 1] + depthVector[i + 2];
+        cout << depthVector[i] << "+" << depthVector[i + 1] << "+" << depthVector[i + 2] << endl;;
+        cout << setOne << endl;
+        if(setOne > setTwo){
+            counter++;
+        }
 
+        setTwo = setOne;
+    }
+
+    return counter;
 }
