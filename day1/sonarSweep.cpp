@@ -42,18 +42,15 @@ int part1(vector<int> depthVector) {
 
 /*
     Checks to see if the sum of a sliding window increases 
-    Every 3 are part of a sliding window, overlapping
+    Every 3 elements are part of a sliding window, overlapping
     If not enough for a full sliding window of 3, stop
 */
 int part2(vector<int> depthVector){
     int counter = 0;
     int setOne = 0;
-    int setTwo = 0;
-    //Loop starts at start of second sliding window
+    int setTwo = 1000000;
     for (int i = 0; i < depthVector.size() - 2; i++){
         setOne = depthVector[i] + depthVector[i + 1] + depthVector[i + 2];
-        cout << depthVector[i] << "+" << depthVector[i + 1] << "+" << depthVector[i + 2] << endl;;
-        cout << setOne << endl;
         if(setOne > setTwo){
             counter++;
         }
