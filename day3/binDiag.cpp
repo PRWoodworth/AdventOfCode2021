@@ -9,12 +9,12 @@
 using namespace std;
 
 int main(int argc, char const *argv[]){
-    string temp, mcd, lcd;
+    string temp, mcd = "", lcd = "";
+    int gammaRate = 0, epsilonRate = 0;
     vector<string> binaryInput;
     vector<int> numOnes, numZeroes;
     ifstream inputFile;
     inputFile.open("inputFile.txt");
-    inputFile >> temp;
     while(getline(inputFile, temp)){
         binaryInput.push_back(temp);
     }
@@ -25,28 +25,30 @@ int main(int argc, char const *argv[]){
     //Get number of 0s and 1s in each column
     for (int i = 0; i < binaryInput.size(); i++){
         for (int k = 0; k < numBits; k++){
-            switch (int(binaryInput[k][i]-'0')){
-            case 0:
+           if (binaryInput[k][i] == '0'){
                 numZeroes[k]++;
-                break;
-            case 1:
+            } else {
                 numOnes[k]++;
-                break;
-            default:
-                break;
             }
         }
     }
     //Construct binary representation of gamma rate
     for (int j = 0; j < numBits; j++){
+        cout << "# 0s at bit " << j << ": " << numZeroes[j] << endl;
+        cout << "# 1s at bit " << j << ": " << numOnes[j] << endl;
         if (numZeroes[j] > numOnes[j]){
-            mcd.append("0");
+            mcd += "0";
+            lcd += "1";
         } else if (numZeroes[j] < numOnes[j]){
-            mcd.append("1");
+            mcd += "1";
+            lcd += "0";
         }
     }
     cout << mcd << endl;
-    
+    cout << lcd << endl;
+
+
+
 
     inputFile.close();
     return 0;
