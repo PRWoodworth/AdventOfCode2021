@@ -25,7 +25,7 @@ int main(int argc, char const *argv[]){
 
     cout << "Total that are larger than previous: " << part1(depthVector) << endl;
     cout << "Total sliding windows that are larger than previous: " << part2(depthVector) << endl;
-
+    inputFile.close();
     return 0;
 }
 

@@ -14,6 +14,8 @@ void aimPart();
 int main(int argc, char const *argv[]){
     rawPart();
     aimPart();
+    
+    return 0;
 }
 
 void rawPart(){
@@ -37,6 +39,7 @@ void rawPart(){
         distance = 0;
     }
     cout << "Part 1 Horizontal Position * Depth = " << h_pos * depth << endl;
+    inputFile.close();
 }
 
 void aimPart(){
@@ -62,4 +65,5 @@ void aimPart(){
         distance = 0;
     }
     cout << "Part 2 Horizontal Position * Depth = " << h_pos * depth << endl;
+    inputFile.close();
 }
