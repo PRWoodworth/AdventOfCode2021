@@ -5,6 +5,9 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include <algorithm>
+#include <cctype>
+#include <regex>
 
 using namespace std;
 
@@ -13,9 +16,14 @@ class Board{
     public:
         Board();
         int rowArray[5];
+        void setRow(int[], int);
 };
 
-Board createBoard();
+Board::Board(){};
+void Board::setRow(int row[], int numRow){
+    this->rowArray[numRow] = *row;
+};
+
 
 int main(int argc, char const *argv[]){
     ifstream inputFile;
@@ -47,22 +55,33 @@ int main(int argc, char const *argv[]){
     //until end of file
     //read in board
     //create board
+    Board newBoard;
     delimiter = " ";
     int numRow = 0, counter = 0;
     while(getline(inputFile, temp, '\n')){
-        cout << temp << endl;
         if(temp.size() == 0){
             numRow = 0;
             continue;
         }
         while((pos=temp.find(delimiter)) != string::npos){
+            if(temp[0] == ' '){
+                temp.erase(0, 1);
+                pos++;
+            }
+            cout << temp << endl;
             token = temp.substr(0, pos);
+            token = regex_replace(token, regex("^ +"), "");
+            token = regex_replace(token, regex(" +$"), "");
+            cout << token << endl;
             row[counter] = stoi(token);
-            //Breaks on first row of first board.
-            //Issue with leading 0s for padding.
-            callPool.push_back(stoi(token));
             temp.erase(0, pos + delimiter.length());
             counter++;
+        }
+        //Add newly created row to a Board object here
+        newBoard.setRow(row, numRow);
+        cout << endl;
+        if(numRow == 5){
+            boardsVector.push_back(newBoard);
         }
         numRow++;
     }
