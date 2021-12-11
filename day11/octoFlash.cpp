@@ -8,12 +8,12 @@ using namespace std;
 static const int NUM_STEPS = 100;
 
 void displayBoardState(vector<vector<int>>);
-int updateBoard(vector<vector<int>>, int, int, int);
+vector<vector<int>> updateBoard(vector<vector<int>>, int, int, int*);
 
 int main(int argc, char const *argv[]){
 
     vector<vector<int>> octoBoard(10);
-    int numFlashes = 0;
+    int *numFlashes = 0;
     int row = 0;
     string temp = "";
     string token;
@@ -27,10 +27,11 @@ int main(int argc, char const *argv[]){
         row++;
     }
     for (int j = 0; j < NUM_STEPS; j++){
+        cout << "STEP #: " << j << endl;
+        displayBoardState(octoBoard);
         for (int k = 0; k < octoBoard.size(); k++){
             //For # rows
             for (int m = 0; m < octoBoard[k].size(); m++){
-                displayBoardState(octoBoard);
                 //For # columns
                 //increment all nodes
                 octoBoard[k][m]++;
@@ -52,10 +53,9 @@ void displayBoardState(vector<vector<int>> octoBoard){
     cout << endl;
 }
 
-int updateBoard(vector<vector<int>> octoBoard, int row, int col, int numFlashes){
-    //TODO: need to modify the board without returning it - fun pointer usage 
+vector<vector<int>> updateBoard(vector<vector<int>> octoBoard, int row, int col, int *numFlashes){
+    //TODO: account for elements that are not bordered on all sides. 
     if(octoBoard[row][col] >= 9){
-
         octoBoard[row][col] = 0;
         numFlashes++;
 
@@ -98,5 +98,5 @@ int updateBoard(vector<vector<int>> octoBoard, int row, int col, int numFlashes)
            updateBoard(octoBoard, row+1, col+1, numFlashes);
         }
     }
-    return numFlashes;
+    return octoBoard;
 }
