@@ -29,13 +29,13 @@ int main(int argc, char const *argv[]){
         row++;
     }
     for (int j = 0; j < NUM_STEPS; j++){
-        cout << "NUM FLASHES SO FAR: " << numFlashes << endl;
+        cout << "NUM FLASHES SO FAR: " << *numFlashes << endl;
         cout << "STEP #: " << j << endl;
         displayBoardState(octoBoard);
         for (int k = 0; k < octoBoard.size(); k++){
-            //For # rows
+            //For # columns
             for (int m = 0; m < octoBoard[k].size(); m++){
-                //For # columns
+                //For # rows
                 //increment all nodes
                 octoBoard = updateBoard(octoBoard, k, m, numFlashes);
             }
@@ -54,201 +54,31 @@ void displayBoardState(vector<vector<int>> octoBoard){
     }
     cout << endl;
 }
+//Struct to define all possible adjacencies
+struct {
+    int dx;
+    int dy;
+} directions[] = {{-1,-1,},{-1,0,},{-1,1},{0,-1},{0,1},{1,-1},{1,0},{1,1}};
 
 vector<vector<int>> updateBoard(vector<vector<int>> octoBoard, int row, int col, int *numFlashes){
+    
     octoBoard[row][col]++;
     if(octoBoard[row][col] >= 9){
         octoBoard[row][col] = 0;
         (*numFlashes)++;
-        //CHECK LOCATIONS
-        if((row == 0 && col == 0)){
-            octoBoard[row][col + 1]++;
-            if (octoBoard[row][col + 1] >= 9){
-                updateBoard(octoBoard, row, col+1, numFlashes);
-            }
-            octoBoard[row + 1][col]++;
-            if (octoBoard[row + 1][col] >= 9){
-                updateBoard(octoBoard, row+1, col, numFlashes);
-            }
-            octoBoard[row + 1][col + 1]++;
-            if (octoBoard[row + 1][col + 1] >= 9){
-                updateBoard(octoBoard, row+1, col+1, numFlashes);
-            }
-        }else if ((row == 0 && col == octoBoard.size())){
-            octoBoard[row][col - 1]++;
-            if (octoBoard[row][col - 1] >= 9){
-                updateBoard(octoBoard, row, col-1, numFlashes);
-            }
-            octoBoard[row + 1][col - 1]++;
-            if (octoBoard[row + 1][col - 1] >= 9){
-                updateBoard(octoBoard, row+1, col-1, numFlashes);
-            }
-            octoBoard[row + 1][col]++;
-            if (octoBoard[row + 1][col] >= 9){
-                updateBoard(octoBoard, row+1, col, numFlashes);
-            }
-
-        }else if ((row == octoBoard[row].size() && col == 0)){
-            octoBoard[row - 1][col]++;
-            if (octoBoard[row - 1][col] >= 9){
-                updateBoard(octoBoard, row-1, col, numFlashes);
-            }
-            octoBoard[row - 1][col + 1]++;
-            if (octoBoard[row - 1][col + 1] >= 9){
-                updateBoard(octoBoard, row-1, col+1, numFlashes);
-            }
-            octoBoard[row][col + 1]++;
-            if (octoBoard[row][col + 1] >= 9){
-                updateBoard(octoBoard, row, col+1, numFlashes);
-            }
-        }else if ((row == octoBoard[row].size() && col == octoBoard.size())) {
-            octoBoard[row - 1][col - 1]++;
-            if (octoBoard[row - 1][col - 1] >= 9){
-                updateBoard(octoBoard, row-1, col-1, numFlashes);
-            }
-            octoBoard[row - 1][col]++;
-            if (octoBoard[row - 1][col] >= 9){
-                updateBoard(octoBoard, row-1, col, numFlashes);
-            }
-            octoBoard[row][col - 1]++;
-            if (octoBoard[row][col - 1] >= 9){
-                updateBoard(octoBoard, row, col-1, numFlashes);
-            }
-        }else if (row == 0){
-            //LEFT AND RIGHT
-            octoBoard[row][col - 1]++;
-            if (octoBoard[row][col - 1] >= 9){
-                updateBoard(octoBoard, row, col-1, numFlashes);
-            }
-            octoBoard[row][col + 1]++;
-            if (octoBoard[row][col + 1] >= 9){
-                updateBoard(octoBoard, row, col+1, numFlashes);
-            }
-
-            //BELOW
-            octoBoard[row + 1][col - 1]++;
-            if (octoBoard[row + 1][col - 1] >= 9){
-                updateBoard(octoBoard, row+1, col-1, numFlashes);
-            }
-            octoBoard[row + 1][col]++;
-            if (octoBoard[row + 1][col] >= 9){
-                updateBoard(octoBoard, row+1, col, numFlashes);
-            }
-            octoBoard[row + 1][col + 1]++;
-            if (octoBoard[row + 1][col + 1] >= 9){
-                updateBoard(octoBoard, row+1, col+1, numFlashes);
-            }
-        }else if (row == octoBoard[row].size()){
-            //ABOVE
-            octoBoard[row - 1][col - 1]++;
-            if (octoBoard[row - 1][col - 1] >= 9){
-                updateBoard(octoBoard, row-1, col-1, numFlashes);
-            }
-            octoBoard[row - 1][col]++;
-            if (octoBoard[row - 1][col] >= 9){
-                updateBoard(octoBoard, row-1, col, numFlashes);
-            }
-            octoBoard[row - 1][col + 1]++;
-            if (octoBoard[row - 1][col + 1] >= 9){
-                updateBoard(octoBoard, row-1, col+1, numFlashes);
-            }
-
-            //LEFT AND RIGHT
-            octoBoard[row][col - 1]++;
-            if (octoBoard[row][col - 1] >= 9){
-                updateBoard(octoBoard, row, col-1, numFlashes);
-            }
-            octoBoard[row][col + 1]++;
-            if (octoBoard[row][col + 1] >= 9){
-                updateBoard(octoBoard, row, col+1, numFlashes);
-            }
-        }else if (col == 0){
-            //IF ON FIRST COLUMN
-            octoBoard[row - 1][col]++;
-            if (octoBoard[row - 1][col] >= 9){
-                updateBoard(octoBoard, row-1, col, numFlashes);
-            }
-            octoBoard[row - 1][col + 1]++;
-            if (octoBoard[row - 1][col + 1] >= 9){
-                updateBoard(octoBoard, row-1, col+1, numFlashes);
-            }
-
-            octoBoard[row][col + 1]++;
-            if (octoBoard[row][col + 1] >= 9){
-                updateBoard(octoBoard, row, col+1, numFlashes);
-            }
-            octoBoard[row + 1][col]++;
-            if (octoBoard[row + 1][col] >= 9){
-                updateBoard(octoBoard, row+1, col, numFlashes);
-            }
-            octoBoard[row + 1][col + 1]++;
-            if (octoBoard[row + 1][col + 1] >= 9){
-                updateBoard(octoBoard, row+1, col+1, numFlashes);
-            }
-        }else if (col == octoBoard.size()){
-            //IF ON LAST COLUMN
-            octoBoard[row - 1][col]++;
-            if (octoBoard[row - 1][col] >= 9){
-                updateBoard(octoBoard, row-1, col, numFlashes);
-            }
-            octoBoard[row - 1][col - 1]++;
-            if (octoBoard[row - 1][col - 1] >= 9){
-                updateBoard(octoBoard, row-1, col-1, numFlashes);
-            }
-            octoBoard[row][col - 1]++;
-            if (octoBoard[row][col - 1] >= 9){
-                updateBoard(octoBoard, row, col-1, numFlashes);
-            }
-            octoBoard[row + 1][col - 1]++;
-            if (octoBoard[row + 1][col - 1] >= 9){
-                updateBoard(octoBoard, row+1, col-1, numFlashes);
-            }
-            octoBoard[row + 1][col]++;
-            if (octoBoard[row + 1][col] >= 9){
-                updateBoard(octoBoard, row+1, col, numFlashes);
-            }
-        }else{
-            //ABOVE
-            octoBoard[row - 1][col - 1]++;
-            if (octoBoard[row - 1][col - 1] >= 9){
-                updateBoard(octoBoard, row-1, col-1, numFlashes);
-            }
-            octoBoard[row - 1][col]++;
-            if (octoBoard[row - 1][col] >= 9){
-                updateBoard(octoBoard, row-1, col, numFlashes);
-            }
-            octoBoard[row - 1][col + 1]++;
-            if (octoBoard[row - 1][col + 1] >= 9){
-                updateBoard(octoBoard, row-1, col+1, numFlashes);
-            }
-            
-
-            //LEFT AND RIGHT
-            octoBoard[row][col - 1]++;
-            if (octoBoard[row][col - 1] >= 9){
-                updateBoard(octoBoard, row, col-1, numFlashes);
-            }
-            octoBoard[row][col + 1]++;
-            if (octoBoard[row][col + 1] >= 9){
-                updateBoard(octoBoard, row, col+1, numFlashes);
-            }
-
-            //BELOW
-            octoBoard[row + 1][col - 1]++;
-            if (octoBoard[row + 1][col - 1] >= 9){
-                updateBoard(octoBoard, row+1, col-1, numFlashes);
-            }
-            octoBoard[row + 1][col]++;
-            if (octoBoard[row + 1][col] >= 9){
-                updateBoard(octoBoard, row+1, col, numFlashes);
-            }
-            octoBoard[row + 1][col + 1]++;
-            if (octoBoard[row + 1][col + 1] >= 9){
-                updateBoard(octoBoard, row+1, col+1, numFlashes);
+        //for every possible adjacent direction
+        for (int i = 0; i < sizeof(directions); i++){
+            //if it's within bounds
+            if((0 <= row + directions[i].dx <= 10) && ( 0 <= col + directions[i].dy <= 10)){
+                //increment it on flash as well
+                octoBoard[row + directions[i].dx][col + directions[i].dy]++;
+                //if that increment causes it to go over 9
+                if (octoBoard[row + directions[i].dx][col + directions[i].dy] >= 9){
+                    //recursively call centered on that index
+                    octoBoard = updateBoard(octoBoard, row + directions[i].dx, col + directions[i].dy, numFlashes);
+                }
             }
         }
-        }
-    cout << endl << *numFlashes << endl; 
-    displayBoardState(octoBoard);
+    }
     return octoBoard;
 }
